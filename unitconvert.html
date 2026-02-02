@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Unit Converter</title>
+<style>
+  :root { --bg:#f5f7fb; --card:#ffffff; --text:#1f2937; --muted:#6b7280; --pri:#2563eb; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);font-family:Segoe UI,system-ui,Arial,sans-serif;color:var(--text);
+       display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+  .card{width:100%;max-width:720px;background:var(--card);border-radius:16px;padding:24px;
+        box-shadow:0 10px 30px rgba(0,0,0,.08)}
+  h2{margin:0 0 6px 0}
+  .sub{color:var(--muted);font-size:14px;margin-bottom:18px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .field{display:flex;gap:8px;align-items:center;background:#f8fafc;border:1px solid #e5e7eb;
+         border-radius:12px;padding:10px 12px}
+  input[type="number"]{flex:1;border:none;background:transparent;font-size:18px;outline:none}
+  select{min-width:140px;border:1px solid #e5e7eb;background:#fff;border-radius:10px;
+         padding:10px;font-size:14px}
+  .top{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .top select{min-width:180px}
+  .actions{display:flex;gap:10px;align-items:center;margin-top:12px}
+  button{cursor:pointer;border:none;border-radius:10px;background:var(--pri);color:#fff;
+         padding:10px 14px;font-weight:600}
+  .ghost{background:#e5e7eb;color:#111827}
+  .right{display:flex;align-items:center;justify-content:center}
+  .hint{font-size:12px;color:var(--muted);margin-top:6px}
+</style>
+</head>
+<body>
+  <div class="card">
+    <h2>Unit Converter</h2>
+    <div class="sub">Length • Mass • Temperature • Speed • Volume</div>
+
+    <div class="top">
+      <select id="category">
+        <option value="length">Length</option>
+        <option value="mass">Mass</option>
+        <option value="temperature">Temperature</option>
+        <option value="speed">Speed</option>
+        <option value="volume">Volume</option>
+      </select>
+
+      <div class="actions">
+        <label class="hint">Decimals:</label>
+        <select id="precision">
+          <option>0</option><option>1</option><option selected>2</option><option>3</option><option>4</option><option>6</option>
+        </select>
+        <button id="swap" class="ghost" title="Swap units">⇄ Swap</button>
+        <button id="copy" class="ghost" title="Copy result">Copy</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <input id="valA" type="number" step="any" placeholder="Enter value" />
+        <select id="unitA"></select>
+      </div>
+      <div class="field">
+        <input id="valB" type="number" step="any" placeholder="Result" />
+        <select id="unitB"></select>
+      </div>
+    </div>
+    <div class="hint" id="note"></div>
+  </div>
+
+<script>
+(function(){
+  const categoryEl = document.getElementById('category');
+  const unitA = document.getElementById('unitA');
+  const unitB = document.getElementById('unitB');
+  const valA = document.getElementById('valA');
+  const valB = document.getElementById('valB');
+  const precisionEl = document.getElementById('precision');
+  const swapBtn = document.getElementById('swap');
+  const copyBtn = document.getElementById('copy');
+  const note = document.getElementById('note');
+
+  // Unit definitions. Linear categories use factor to base. Temperature uses custom functions.
+  const UNITS = {
+    length: {
+      base: 'm',
+      list: {
+        'km': 1000,
+        'm': 1,
+        'cm': 0.01,
+        'mm': 0.001,
+        'mi': 1609.344,
+        'yd': 0.9144,
+        'ft': 0.3048,
+        'in': 0.0254
+      },
+      label: 'Base: meter (m)'
+    },
+    mass: {
+      base: 'kg',
+      list: {
+        't (metric)': 1000,
+        'kg': 1,
+        'g': 0.001,
+        'mg': 0.000001,
+        'lb': 0.45359237,
+        'oz': 0.028349523125
+      },
+      label: 'Base: kilogram (kg)'
+    },
+    speed: {
+      base: 'm/s',
+      list: {
+        'm/s': 1,
+        'km/h': 1/3.6,
+        'mph': 0.44704,
+        'knot': 0.514444
+      },
+      label: 'Base: meter per second (m/s)'
+    },
+    volume: {
+      base: 'L',
+      list: {
+        'm³': 1000,          // 1 m³ = 1000 L
+        'L': 1,
+        'mL': 0.001,
+        'US gal': 3.785411784,
+        'US qt': 0.946352946,
+        'US pt': 0.473176473,
+        'US cup': 0.2365882365,
+        'US fl oz': 0.0295735295625
+      },
+      label: 'Base: liter (L)'
+    },
+    temperature: {
+      base: 'K',
+      list: { '°C': 'C', '°F': 'F', 'K': 'K' },
+      label: 'Uses exact affine formulas.'
+    }
+  };
+
+  function optionsFor(cat){
+    const def = UNITS[cat].list;
+    return Object.keys(def).map(u => `<option value="${u}">${u}</option>`).join('');
+  }
+
+  function toBaseLinear(cat, value, unit){
+    const factor = UNITS[cat].list[unit];
+    return value * factor;
+  }
+
+  function fromBaseLinear(cat, valueBase, unit){
+    const factor = UNITS[cat].list[unit];
+    return valueBase / factor;
+  }
+
+  // Temperature conversions
+  function toBaseTemp(value, unit){ // base K
+    if (unit === 'K') return value;
+    if (unit === '°C') return value + 273.15;
+    if (unit === '°F') return (value - 32) * 5/9 + 273.15;
+  }
+  function fromBaseTemp(valueK, unit){
+    if (unit === 'K') return valueK;
+    if (unit === '°C') return valueK - 273.15;
+    if (unit === '°F') return (valueK - 273.15) * 9/5 + 32;
+  }
+
+  function convert(cat, x, ua, ub){
+    if (x === '' || isNaN(x)) return '';
+    const v = Number(x);
+    if (cat === 'temperature'){
+      const base = toBaseTemp(v, ua);
+      return fromBaseTemp(base, ub);
+    } else {
+      const base = toBaseLinear(cat, v, ua);
+      return fromBaseLinear(cat, base, ub);
+    }
+  }
+
+  function fillUnits(cat){
+    unitA.innerHTML = optionsFor(cat);
+    unitB.innerHTML = optionsFor(cat);
+    // sensible defaults
+    if (cat==='length'){ unitA.value='m'; unitB.value='ft'; }
+    if (cat==='mass'){ unitA.value='kg'; unitB.value='lb'; }
+    if (cat==='speed'){ unitA.value='km/h'; unitB.value='mph'; }
+    if (cat==='volume'){ unitA.value='L'; unitB.value='US gal'; }
+    if (cat==='temperature'){ unitA.value='°C'; unitB.value='°F'; }
+    note.textContent = UNITS[cat].label;
+    recalc('A');
+  }
+
+  function round(val){
+    const p = Number(precisionEl.value);
+    return Number(val).toFixed(p);
+  }
+
+  // Recalc depending on source input
+  function recalc(source){
+    const cat = categoryEl.value;
+    if (source === 'A'){
+      const y = convert(cat, valA.value, unitA.value, unitB.value);
+      valB.value = y === '' ? '' : round(y);
+    } else {
+      const y = convert(cat, valB.value, unitB.value, unitA.value);
+      valA.value = y === '' ? '' : round(y);
+    }
+  }
+
+  // Events
+  categoryEl.addEventListener('change', ()=> fillUnits(categoryEl.value));
+  unitA.addEventListener('change', ()=> recalc('A'));
+  unitB.addEventListener('change', ()=> recalc('A'));
+  precisionEl.addEventListener('change', ()=> recalc('A'));
+  valA.addEventListener('input', ()=> recalc('A'));
+  valB.addEventListener('input', ()=> recalc('B'));
+  swapBtn.addEventListener('click', ()=>{
+    const ua = unitA.value, ub = unitB.value;
+    unitA.value = ub; unitB.value = ua;
+    recalc('A');
+  });
+  copyBtn.addEventListener('click', ()=>{
+    if (valB.value !== '') navigator.clipboard.writeText(valB.value + ' ' + unitB.value);
+  });
+
+  // init
+  fillUnits('length');
+})();
+</script>
+</body>
+</html>

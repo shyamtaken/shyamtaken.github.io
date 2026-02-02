@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Toman Gang</title>
+  <meta name="description" content="A simple single-file site for our school gang: members, events, gallery and contact." />
+  <style>
+        body {
+      font-family: sans-serif;
+      text-align: center;
+    }
+
+    img {
+      width: 200px;
+      margin: 10px;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: transform 0.2s;
+    }
+.class-section {
+    background: linear-gradient(135deg, #e6f0ff, #ffffff);
+    border: 2px solid #aad;
+    border-radius: 15px;
+    padding: 20px;
+    max-width: 600px;
+    margin: 30px auto;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', sans-serif;
+  }
+   .class-section h2 {
+    text-align: center;
+    color: #003366;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+    img:hover {
+      transform: scale(1.05);
+    }
+
+    /* Fullscreen overlay */
+    .fullscreen {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+.fullscreen img {
+  max-width: 95vw;
+  max-height: 95vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+ .book-link {
+    display: block;
+    padding: 10px 15px;
+    margin: 8px 0;
+    text-decoration: none;
+    background: #007bff;
+    color: white;
+    border-radius: 8px;
+    transition: background 0.3s;
+    font-weight: 500;
+  }
+    .book-link:hover {
+    background: #0056b3;
+  }
+    :root{
+      --accent:#2b6cb0;
+      --muted:#6b7280;
+      --bg:#f7fafc;
+      --card:#ffffff;
+      --glass: rgba(255,255,255,0.6);
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#eef2ff 0%,var(--bg) 100%);color:#111}
+    .container{max-width:980px;margin:28px auto;padding:20px}
+    header{display:flex;align-items:center;gap:16px}
+    .logo{width:72px;height:72px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#805ad5);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:22px;box-shadow:0 6px 18px rgba(66,89,110,0.12)}
+    h1{margin:0;font-size:28px}
+    p.lead{margin:6px 0 18px;color:var(--muted)}
+
+    nav{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+    nav a{padding:8px 12px;border-radius:8px;text-decoration:none;color:var(--accent);border:1px solid rgba(43,108,176,0.12);font-weight:600}
+
+    .grid{display:grid;grid-template-columns:1fr 320px;gap:18px}
+    .card{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 8px 20px rgba(12,20,30,0.05)}
+
+    /* Members */
+    .members{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+    .member{display:flex;gap:12px;align-items:center}
+    .avatar{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,#ffd166,#ef476f);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+    .meta small{color:var(--muted);display:block}
+
+    /* Events */
+    .events{display:flex;flex-direction:column;gap:10px}
+    .event{border-left:4px solid var(--accent);padding:10px 12px;border-radius:8px;background:linear-gradient(180deg,rgba(43,108,176,0.03),transparent)}
+    .event time{display:block;color:var(--muted);font-size:13px}
+
+    /* Gallery */
+    .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+    .gallery img{width:100%;height:90px;object-fit:cover;border-radius:8px}
+
+    footer{margin-top:20px;text-align:center;color:var(--muted);font-size:13px}
+
+    /* Responsive */
+    @media (max-width:900px){
+      .grid{grid-template-columns:1fr}
+      .gallery{grid-template-columns:repeat(2,1fr)}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">TG</div>
+      <div>
+        <h1>Toman Gang</h1>
+        <p class="lead">A friendly page for our crew — leader, manager, hacker and more.</p>
+      </div>
+    </header>
+
+    <nav>
+      <a href="#members">Members</a>
+      <a href="#events">Events</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <main class="grid">
+      <section>
+        <div id="members" class="card">
+          <h2>Members</h2>
+          <p small class="lead">Who's in the gang — click a member for a short bio.</p>
+          <div class="members" id="membersList">
+            <!-- Members are added by the script. Edit the data below in the &lt;script&gt; section. -->
+          </div>
+        </div>
+
+        <div id="events" class="card" style="margin-top:14px">
+          <h2>Upcoming Events</h2>
+          <div class="events" id="eventsList">
+            <!-- Events injected by script -->
+          </div>
+        </div>
+
+        <div id="gallery" class="card" style="margin-top:14px">
+          <h2>Gallery</h2>
+          <div class="gallery" id="galleryGrid">
+        <img src="https://image2url.com/images/1762678917409-3d3b0aae-d7e5-4380-9ef6-c790b0658153.jpg" alt="Shyam Bhagat" onclick="openFullscreen(this)">
+        <img src="https://image2url.com/images/1762678873483-da3df062-fb88-4ff3-8073-2fd654c24338.png" alt="Sourabh Sandilya" onclick="openFullscreen(this)">
+        <img src="https://image2url.com/images/1762678716003-261b7200-f942-4129-9b81-ad410902e173.jpg" alt="Sanyam Horo" onclick="openFullscreen(this)">
+            <!-- Gallery images added by script -->
+             <div class="fullscreen" id="fullscreen" onclick="closeFullscreen()">
+    <img id="fullscreenImg" src="" alt="">
+  </div>
+          </div>
+        </div>
+      </section>
+
+      <aside>
+        <div class="card">
+          <h3>Quick info</h3>
+          <p><strong>Founded:</strong> 2025</p>
+          <p><strong>Members:</strong> <span id="memberCount">5</span></p>
+          <p><strong>Next meetup:</strong> N/A</p>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <h3>Contact</h3>
+          <p id="contact">Want to join or share photos? Email <strong>bhdipa3@gmail.com</strong> or use the form below.</p>
+          <form id="contactForm" onsubmit="handleContact(event)">
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <input type="text" id="name" placeholder="Your name" required style="padding:8px;border-radius:8px;border:1px solid #e6eef8">
+              <input type="email" id="email" placeholder="Email" required style="padding:8px;border-radius:8px;border:1px solid #e6eef8">
+              <textarea id="message" rows="3" placeholder="Message" style="padding:8px;border-radius:8px;border:1px solid #e6eef8"></textarea>
+              <button type="submit" style="padding:10px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer">Send</button>
+            </div>
+          </form>
+          <div id="contactResult" style="margin-top:8px;color:var(--muted)"></div>
+        </div>
+      </aside>
+             <div class="card">
+        <h3>Other Websites</h3>
+        <a href="https://shyamtaken.github.io/AI-Powered-WEB/ai.html">ShyamGPT</a><br>
+        <a href="https://shyamtaken.github.io/AI-Powered-WEB/sign%20in.html">EduPortal</a><br>
+        </div>
+    </main>
+
+    <footer>
+      <small></small>
+    </footer>
+  </div>
+
+  <script>
+    const MEMBERS = [
+      {name:'Rishabh Banerjee',role:'Fighting Leader',bio:'Good at Killing. An Assassin?'},
+      {name:'Shyam Bhagat',role:'Hacker',bio:'The Topper.'},
+      {name:'Sourabh Sandilya',role:'Spy Leader!',bio:'The Best Spy Leader in Milky Way Galaxy!'},
+      {name:'Sanyam Horo',role:'Leader',bio:'Wanted to be Leader.'},
+  {name:'Abhay Kishor',role:'Manager',bio:'Manages??.'},
+  {name:'Pritam',role:'Spy Leader',bio:'Spy Leader!'}
+    ];
+
+    const EVENTS = [
+      {title:"none",date:"none",note:"No upcoming events."},
+    ];
+ function openFullscreen(img) {
+      const full = document.getElementById("fullscreen");
+      const fullImg = document.getElementById("fullscreenImg");
+      fullImg.src = img.src;
+      full.style.display = "flex";
+    }
+
+    function closeFullscreen() {
+      document.getElementById("fullscreen").style.display = "none";
+    }
+    const GALLERY = [
+      'https://image2url.com/images/1762678716003-261b7200-f942-4129-9b81-ad410902e173.jpg',
+      'https://image2url.com/images/1762678873483-da3df062-fb88-4ff3-8073-2fd654c24338.png',
+      'https://image2url.com/images/1762678917409-3d3b0aae-d7e5-4380-9ef6-c790b0658153.jpg',
+      'https://picsum.photos/seed/5/400/300',
+      'https://picsum.photos/seed/5/400/300',
+      'https://picsum.photos/seed/5/400/300',
+      'https://picsum.photos/seed/5/400/300',
+      'https://picsum.photos/seed/5/400/300',
+      'https://picsum.photos/seed/5/400/300',
+      'https://picsum.photos/seed/5/400/300',
+      'https://picsum.photos/seed/5/400/300',
+      'https://picsum.photos/seed/5/400/300',
+            'https://picsum.photos/seed/5/400/300',
+                  'https://picsum.photos/seed/5/400/300'
+
+    ];
+    // ====== End editable data ======
+
+    // Render members
+    const membersList = document.getElementById('membersList');
+    MEMBERS.forEach((m, i) => {
+      const el = document.createElement('div');
+      el.className = 'member card';
+      el.style.cursor = 'pointer';
+      el.innerHTML = `
+        <div class="avatar">${m.name.charAt(0).toUpperCase()}</div>
+        <div class="meta">
+          <strong>${m.name}</strong>
+          <small>${m.role}</small>
+        </div>
+      `;
+      el.addEventListener('click', () => alert(m.name + " — " + m.bio));
+      membersList.appendChild(el);
+    });
+    document.getElementById('memberCount').textContent = MEMBERS.length;
+
+    // Render events
+    const eventsList = document.getElementById('eventsList');
+    EVENTS.forEach(ev => {
+      const div = document.createElement('div');
+      div.className = 'event';
+      const when = new Date(ev.date);
+      div.innerHTML = `<strong>${ev.title}</strong><time>${when.toDateString()}</time><div>${ev.note}</div>`;
+      eventsList.appendChild(div);
+    });
+
+    // Next event quick find
+    if(EVENTS.length) {
+      const sorted = EVENTS.slice().sort((a,b)=>new Date(a.date)-new Date(b.date));
+      document.getElementById('nextEvent').textContent = new Date(sorted[0].date).toDateString();
+    }
+
+    // Gallery
+    const galleryGrid = document.getElementById('galleryGrid');
+    GALLERY.forEach(src => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = 'gang photo';
+      galleryGrid.appendChild(img);
+    });
+
+    // Simple contact handler (no email sent — just shows result locally)
+    function handleContact(e){
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+      const result = document.getElementById('contactResult');
+      result.textContent = `Thanks ${name}! Message received locally. Email: ${email}`;
+      // Tip: hook this to a backend or email service when ready.
+      e.target.reset();
+    }
+  </script>
+</body>
+</html>

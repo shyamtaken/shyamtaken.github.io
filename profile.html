@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile</title>
+<style>
+  body { margin: 0; font-family: Arial, sans-serif; background: #f2f2f2; }
+  .cover { width: 100%; height: 200px; background: #ccc; position: relative; background-size: cover; background-position: center; }
+  .change-cover { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.6); color: #fff; padding: 5px 10px; cursor: pointer; border: none; }
+  .profile-container { background: #fff; padding: 1rem; margin-top: -70px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; }
+  .profile-pic { width: 140px; height: 140px; border-radius: 50%; border: 4px solid #fff; object-fit: cover; position: relative; top: -70px; background: #eee; }
+  .btn { background: #ddd; border: none; padding: 6px 12px; margin-top: 4px; cursor: pointer; border-radius: 4px; display: inline-block; }
+  .field { margin-top: 10px; }
+  .label { font-weight: bold; }
+  input[type="file"] { display: none; }
+  .edit-section { display: none; margin-top: 5px; }
+  progress { width: 100%; height: 15px; }
+</style>
+</head>
+<body>
+
+<!-- Cover Photo -->
+<div class="cover" id="coverPhoto">
+  <button class="change-cover" onclick="document.getElementById('coverInput').click()">Change Cover</button>
+  <input type="file" id="coverInput" accept="image/*">
+</div>
+
+<div class="profile-container">
+  <!-- Profile Picture -->
+  <img id="profilePic" class="profile-pic" alt="Profile Picture" style="display:none;">
+  <div><button class="btn" onclick="document.getElementById('picInput').click()">Change Picture</button></div>
+  <input type="file" id="picInput" accept="image/*">
+
+  <!-- Name -->
+  <div class="field">
+    <div class="label" id="displayName">Guest</div>
+    <button class="btn" id="editNameBtn">Change Name</button>
+    <div class="edit-section" id="nameEditSection">
+      <input type="text" id="nameInput"><button class="btn" id="saveNameBtn">Save</button>
+    </div>
+  </div>
+
+  <!-- Email -->
+  <div class="field">
+    <div class="label">Email:</div>
+    <span id="displayEmail">Not set</span>
+    <button class="btn" id="editEmailBtn">Change</button>
+    <div class="edit-section" id="emailEditSection">
+      <input type="email" id="emailInput"><button class="btn" id="saveEmailBtn">Save</button>
+    </div>
+  </div>
+
+  <!-- Phone -->
+  <div class="field">
+    <div class="label">Phone:</div>
+    <span id="displayPhone">Not set</span>
+    <button class="btn" id="editPhoneBtn">Change</button>
+    <div class="edit-section" id="phoneEditSection">
+      <input type="tel" id="phoneInput" pattern="[0-9]{10}"><button class="btn" id="savePhoneBtn">Save</button>
+    </div>
+  </div>
+
+  <!-- Bio -->
+  <div class="field">
+    <div class="label">Bio:</div>
+    <span id="displayBio">Not set</span>
+    <button class="btn" id="editBioBtn">Change</button>
+    <div class="edit-section" id="bioEditSection">
+      <textarea id="bioInput" rows="3" style="width:100%;"></textarea><button class="btn" id="saveBioBtn">Save</button>
+    </div>
+  </div>
+
+  <!-- Birthday -->
+  <div class="field">
+    <div class="label">Birthday:</div>
+    <span id="displayBirthday">Not set</span>
+    <button class="btn" id="editBirthdayBtn">Change</button>
+    <div class="edit-section" id="birthdayEditSection">
+      <input type="date" id="birthdayInput"><button class="btn" id="saveBirthdayBtn">Save</button>
+    </div>
+  </div>
+
+  <!-- Location -->
+  <div class="field">
+    <div class="label">Location:</div>
+    <span id="displayLocation">Not set</span>
+    <button class="btn" id="editLocationBtn">Change</button>
+    <div class="edit-section" id="locationEditSection">
+      <input type="text" id="locationInput"><button class="btn" id="saveLocationBtn">Save</button>
+    </div>
+  </div>
+
+  <!-- Gender -->
+  <div class="field">
+    <div class="label">Gender:</div>
+    <span id="displayGender">Not set</span>
+    <button class="btn" id="editGenderBtn">Change</button>
+    <div class="edit-section" id="genderEditSection">
+      <select id="genderInput">
+        <option value="">Select</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+      </select>
+      <button class="btn" id="saveGenderBtn">Save</button>
+    </div>
+  </div>
+
+  <!-- Language Preference -->
+  <div class="field">
+    <div class="label">Language Preference:</div>
+    <span id="displayLanguage">Not set</span>
+    <button class="btn" id="editLanguageBtn">Change</button>
+    <div class="edit-section" id="languageEditSection">
+      <select id="languageInput">
+        <option value="">Select</option>
+        <option>English</option>
+        <option>Hindi</option>
+        <option>Spanish</option>
+      </select>
+      <button class="btn" id="saveLanguageBtn">Save</button>
+    </div>
+  </div>
+
+  <!-- Notifications -->
+  <div class="field">
+    <div class="label">Notifications:</div>
+    <span id="displayNotifications">Not set</span>
+    <button class="btn" id="editNotificationsBtn">Change</button>
+    <div class="edit-section" id="notificationsEditSection">
+      <select id="notificationsInput">
+        <option value="">Select</option>
+        <option>Enabled</option>
+        <option>Disabled</option>
+      </select>
+      <button class="btn" id="saveNotificationsBtn">Save</button>
+    </div>
+  </div>
+
+  <!-- Country -->
+  <div class="field">
+    <div class="label">Country of Residence:</div>
+    <span id="displayCountry">Not set</span>
+    <button class="btn" id="editCountryBtn">Change</button>
+    <div class="edit-section" id="countryEditSection">
+      <input type="text" id="countryInput">
+      <button class="btn" id="saveCountryBtn">Save</button>
+    </div>
+  </div>
+
+  <!-- Total Time -->
+  <div class="field">
+    <div class="label">Total Time Spent:</div>
+    <span id="displayTime">0 seconds</span>
+  </div>
+
+  <!-- Profile Completion -->
+  <div class="field">
+    <div class="label">Profile Completion:</div>
+    <progress id="completionBar" value="0" max="100"></progress>
+    <span id="completionPercent">0%</span>
+  </div>
+
+  <!-- Password Change -->
+  <div class="field">
+    <button class="btn" onclick="alert('Redirect to password change page')">Change Password</button>
+  </div>
+
+  <!-- Logout -->
+  <div class="field">
+<button id="logoutBtn" style="background:#d32f2f; color:white; padding:10px; border:none; border-radius:5px;">
+  Logout
+</button>
+</div>
+<script>
+  const auth = firebase.auth();
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  try {
+    // Firebase sign out
+    await auth.signOut();
+
+    // Google Sign-In sign out
+    if (typeof google !== "undefined" && google.accounts && google.accounts.id) {
+      google.accounts.id.disableAutoSelect();
+    }
+
+    // Clear local/session storage if needed
+    localStorage.clear();
+    sessionStorage.clear();
+
+    // Redirect to login page
+    window.location.href = "Sign in.html";
+    console.log("User signed out successfully.");
+  } catch (error) {
+    console.error("Logout error:", error);
+    alert("Error signing out: " + error.message);
+  }
+});
+</script>
+</div>
+
+<script>
+  const fields = [
+    { key:'username', displayId:'displayName', editBtn:'editNameBtn', section:'nameEditSection', input:'nameInput', saveBtn:'saveNameBtn' },
+    { key:'email', displayId:'displayEmail', editBtn:'editEmailBtn', section:'emailEditSection', input:'emailInput', saveBtn:'saveEmailBtn' },
+    { key:'phone', displayId:'displayPhone', editBtn:'editPhoneBtn', section:'phoneEditSection', input:'phoneInput', saveBtn:'savePhoneBtn' },
+    { key:'bio', displayId:'displayBio', editBtn:'editBioBtn', section:'bioEditSection', input:'bioInput', saveBtn:'saveBioBtn' },
+    { key:'birthday', displayId:'displayBirthday', editBtn:'editBirthdayBtn', section:'birthdayEditSection', input:'birthdayInput', saveBtn:'saveBirthdayBtn' },
+    { key:'location', displayId:'displayLocation', editBtn:'editLocationBtn', section:'locationEditSection', input:'locationInput', saveBtn:'saveLocationBtn' },
+    { key:'gender', displayId:'displayGender', editBtn:'editGenderBtn', section:'genderEditSection', input:'genderInput', saveBtn:'saveGenderBtn' },
+    { key:'language', displayId:'displayLanguage', editBtn:'editLanguageBtn', section:'languageEditSection', input:'languageInput', saveBtn:'saveLanguageBtn' },
+    { key:'notifications', displayId:'displayNotifications', editBtn:'editNotificationsBtn', section:'notificationsEditSection', input:'notificationsInput', saveBtn:'saveNotificationsBtn' },
+    { key:'country', displayId:'displayCountry', editBtn:'editCountryBtn', section:'countryEditSection', input:'countryInput', saveBtn:'saveCountryBtn' }
+  ];
+
+  function updateCompletion() {
+    const requiredFields = ['username','email','phone','bio','birthday','location','gender','language','notifications','country'];
+    let filled = requiredFields.filter(k => localStorage.getItem(k) && localStorage.getItem(k).trim() !== '').length;
+    let percent = Math.round((filled / requiredFields.length) * 100);
+    document.getElementById('completionBar').value = percent;
+    document.getElementById('completionPercent').textContent = percent + '%';
+  }
+
+  fields.forEach(f=>{
+    const val = localStorage.getItem(f.key);
+    if(val) document.getElementById(f.displayId).textContent = val;
+    document.getElementById(f.editBtn).addEventListener('click', ()=>{
+      let inputElem = document.getElementById(f.input);
+      if (inputElem.tagName === 'SELECT') {
+        inputElem.value = localStorage.getItem(f.key) || '';
+      } else {
+        inputElem.value = document.getElementById(f.displayId).textContent !== "Not set" ? document.getElementById(f.displayId).textContent : "";
+      }
+      document.getElementById(f.section).style.display = 'block';
+    });
+    document.getElementById(f.saveBtn).addEventListener('click', ()=>{
+      let newVal = document.getElementById(f.input).value.trim();
+      if(newVal) {
+        document.getElementById(f.displayId).textContent = newVal;
+        localStorage.setItem(f.key, newVal);
+      }
+      document.getElementById(f.section).style.display = 'none';
+      updateCompletion();
+    });
+  });
+
+  // Profile pic
+  const storedPic = localStorage.getItem('profilePic');
+  if (storedPic) { document.getElementById('profilePic').src = storedPic; document.getElementById('profilePic').style.display = 'block'; }
+  document.getElementById('picInput').addEventListener('change', e=>{
+    const file = e.target.files[0]; if(!file) return;
+    const r = new FileReader();
+    r.onload = ev=>{
+      document.getElementById('profilePic').src = ev.target.result;
+      document.getElementById('profilePic').style.display = 'block';
+      localStorage.setItem('profilePic', ev.target.result);
+      updateCompletion();
+    };
+    r.readAsDataURL(file);
+  });
+
+  // Cover photo
+  const storedCover = localStorage.getItem('coverPhoto');
+  if (storedCover) document.getElementById('coverPhoto').style.backgroundImage = `url(${storedCover})`;
+  document.getElementById('coverInput').addEventListener('change', e=>{
+    const file = e.target.files[0]; if(!file) return;
+    const r = new FileReader();
+    r.onload = ev=>{
+      document.getElementById('coverPhoto').style.backgroundImage = `url(${ev.target.result})`;
+      localStorage.setItem('coverPhoto', ev.target.result);
+    };
+    r.readAsDataURL(file);
+  });
+
+  // Time spent tracking
+  let startTime = Date.now();
+  let totalTime = parseInt(localStorage.getItem('totalTime') || '0', 10);
+  function updateTimeDisplay() {
+    let seconds = totalTime + Math.floor((Date.now() - startTime) / 1000);
+    document.getElementById('displayTime').textContent = seconds + ' seconds';
+  }
+  setInterval(updateTimeDisplay, 1000);
+  window.addEventListener('beforeunload', ()=>{
+    let session = Math.floor((Date.now() - startTime) / 1000);
+    localStorage.setItem('totalTime', totalTime + session);
+  });
+
+  updateCompletion();
+</script>
+</body>
+</html>
