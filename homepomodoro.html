@@ -1,263 +1,362 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EduPortal</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="home.css">
-  <style>
-  body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background: #f0f0f0;
-    margin: 0;
-    padding: 0;
-  }
-  h1 {
-    margin-top: 20px;
-  }
-  #timer {
-    font-size: 48px;
-    margin: 20px;
-  }
-  button {
-    font-size: 16px;
-    padding: 10px 20px;
-    margin: 5px;
-    cursor: pointer;
-  }
-  #session {
-    font-size: 20px;
-    margin-top: 10px;
-  }
-  .settings, .tasks, .noise-control {
-    margin: 20px auto;
-    padding: 10px;
-    background: #fff;
-    display: inline-block;
-    border-radius: 8px;
-    text-align: left;
-  }
-  .settings label {
-    margin-right: 5px;
-  }
-  .settings input {
-    width: 50px;
-    text-align: center;
-  }
-  .tasks input[type="text"] {
-    width: 200px;
-  }
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  ul li {
-    background: #eee;
-    margin: 3px 0;
-    padding: 5px;
-    border-radius: 4px;
-  }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduPortal - Study</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f9;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+h1 {
+  margin-top: 20px;
+}
+
+.container {
+  max-width: 700px;
+  margin: 20px auto;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  margin: 15px 0;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+#timer {
+  font-size: 52px;
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+#session {
+  font-size: 18px;
+  color: #555;
+}
+
+button {
+  padding: 10px 18px;
+  margin: 5px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: #4c6ef5;
+  color: white;
+  transition: 0.2s ease;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+button.secondary {
+  background: #868e96;
+}
+
+button.danger {
+  background: #e03131;
+}
+
+input[type="number"] {
+  width: 60px;
+  text-align: center;
+}
+
+input[type="text"] {
+  padding: 6px;
+  width: 60%;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background: #f1f3f5;
+  margin: 5px 0;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+li:hover {
+  background: #dee2e6;
+}
 </style>
 </head>
+
 <body>
-  <div id="overlay"></div>
-<header>
-  <nav class="navbar" style="justify-content: flex-start;">
-    <button id="menuBtn" class="hamburger" style="margin-right:1rem;">☰</button>
-    <div class="logo">EduPortal</div>
-    <div style="flex:1"></div>
-<button class="back-btn" onclick="window.history.back()">  ⬅ Back</button>
-<button id="themeToggle" class="icon-btn"><i class="fas fa-moon"></i></button>
-    <button id="profileBtn" style="margin-left:1rem;">Profile</button>
-  </nav>
-</header>
-  <div id="sideMenu" class="side-menu">
-    <a href="https://shyamtaken.github.io/AI-Powered-WEB/home.html">Home</a>
-    <a href="https://shyamtaken.github.io/AI-Powered-WEB/homebooks.html">DAV Books</a>
-    <a href="https://shyamtaken.github.io/AI-Powered-WEB/homeabout.html">About Us</a>
-    <a href="https://shyamtaken.github.io/AI-Powered-WEB/homecontact.html">Contact Us</a>
-    <a href="https://shyamtaken.github.io/AI-Powered-WEB/homepomodoro.html">About Us</a>
-    <a href="https://shyamtaken.github.io/AI-Powered-WEB/homeabout.html">About Us</a>
-    <a href="https://shyamtaken.github.io/AI-Powered-WEB/homeabout.html">About Us</a>
-    <a href="https://shyamtaken.github.io/AI-Powered-WEB/homeabout.html">About Us</a>
-    <a href="https://shyamtaken.github.io/AI-Powered-WEB/homeabout.html">About Us</a>
-    <a href="https://shyamtaken.github.io/AI-Powered-WEB/homeabout.html">About Us</a>
-    <a href="#">About Us</a>
-    <a href="#">About Us</a>
-    <a href="#">About Us</a>
-    <a href="#">About Us</a>
-    <a href="#">About Us</a>
-    <a href="#">About Us</a>
-    <a href="#">About Us</a>
-    <a href="#">About Us</a>
+
+<h1>Study Focus</h1>
+
+<div class="container">
+
+  <!-- Settings -->
+  <div class="card">
+    <h3>Session Settings</h3>
+    Work: <input type="number" id="workInput" value="25" min="1">
+    Short: <input type="number" id="shortInput" value="5" min="1">
+    Long: <input type="number" id="longInput" value="15" min="1">
+    <button id="saveBtn" class="secondary">Save</button>
   </div>
-  <script src="home.js"></script>
-   <div style="margin-left: 120px; padding: 20px;">
-<h1>Unstoppable</h1>
 
-<div class="settings">
-  <label>Work (min):</label>
-  <input type="number" id="workInput" value="25" min="1" />
-  <label>Short Break:</label>
-  <input type="number" id="shortBreakInput" value="5" min="1" />
-  <label>Long Break:</label>
-  <input type="number" id="longBreakInput" value="15" min="1" />
-  <button onclick="saveSettings()">Save Settings</button>
+  <!-- Timer -->
+  <div class="card">
+    <div id="session">Work Session</div>
+    <div id="timer">25:00</div>
+
+    <button id="startBtn">Start</button>
+    <button id="pauseBtn" class="secondary">Pause</button>
+    <button id="resetBtn" class="danger">Reset</button>
+    <button id="noiseBtn" class="secondary">Toggle Alpha Waves</button>
+  </div>
+
+  <!-- Tasks -->
+  <div class="card">
+    <h3>My Tasks</h3>
+    <input type="text" id="taskInput" placeholder="New Task">
+    <button id="addTaskBtn">Add</button>
+    <ul id="taskList"></ul>
+  </div>
+
 </div>
 
-<div id="session">Work Session</div>
-<div id="timer">25:00</div>
-
-<button onclick="startTimer()">Start</button>
-<button onclick="pauseTimer()">Pause</button>
-<button onclick="resetTimer()">Reset</button>
-
-<div class="noise-control">
-  <button onclick="toggleNoise()">Toggle White Noise</button>
-</div>
-
-<div class="tasks">
-  <h3>My Tasks</h3>
-  <input type="text" id="taskInput" placeholder="New Task"/>
-  <button onclick="addTask()">Add</button>
-  <ul id="taskList"></ul>
-</div>
-
-<audio id="whiteNoise" loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
+<!-- Alpha Waves Audio -->
+<audio id="alphaAudio" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8a4e2e4d5.mp3?filename=alpha-waves-ambient-110624.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-  // Durations
-  let WORK_TIME = 25 * 60;
-  let SHORT_BREAK = 5 * 60;
-  let LONG_BREAK = 15 * 60;
-  const CYCLES_BEFORE_LONG_BREAK = 4;
+  let audioContext = null;
+let leftOsc = null;
+let rightOsc = null;
+let gainNode = null;
+let isPlaying = false;
 
-  let timeRemaining = WORK_TIME;
-  let timerInterval = null;
-  let cyclesCompleted = 0;
-  let isRunning = false;
-  let currentMode = "work";
+function toggleAlpha() {
+  if (!isPlaying) {
 
-  const noise = document.getElementById("whiteNoise");
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-  function updateDisplay() {
-    const minutes = Math.floor(timeRemaining / 60).toString().padStart(2, '0');
-    const seconds = (timeRemaining % 60).toString().padStart(2, '0');
-    document.getElementById("timer").textContent = `${minutes}:${seconds}`;
-    document.getElementById("session").textContent =
-      currentMode === "work"
-        ? "Work Session"
-        : currentMode === "short_break"
-        ? "Short Break"
-        : "Long Break";
+    // Create oscillators
+    leftOsc = audioContext.createOscillator();
+    rightOsc = audioContext.createOscillator();
+
+    // Create stereo panners
+    const leftPan = audioContext.createStereoPanner();
+    const rightPan = audioContext.createStereoPanner();
+
+    gainNode = audioContext.createGain();
+    gainNode.gain.value = 0.2; // volume control
+
+    // Base frequency
+    const baseFreq = 210;
+    const alphaFreq = 12; // upper alpha
+
+    leftOsc.frequency.value = baseFreq;
+    rightOsc.frequency.value = baseFreq + alphaFreq;
+
+    leftPan.pan.value = -1;
+    rightPan.pan.value = 1;
+
+    leftOsc.connect(leftPan).connect(gainNode);
+    rightOsc.connect(rightPan).connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    leftOsc.start();
+    rightOsc.start();
+
+    isPlaying = true;
+
+  } else {
+
+    leftOsc.stop();
+    rightOsc.stop();
+    audioContext.close();
+
+    isPlaying = false;
+  }
+}
+
+document.getElementById("noiseBtn").addEventListener("click", toggleAlpha);
+
+// =====================
+// Timer Configuration
+// =====================
+let WORK_TIME = 25 * 60;
+let SHORT_BREAK = 5 * 60;
+let LONG_BREAK = 15 * 60;
+const LONG_BREAK_CYCLE = 4;
+
+let currentMode = "work";
+let timeRemaining = WORK_TIME;
+let timerInterval = null;
+let cycles = 0;
+let isRunning = false;
+
+// DOM Elements
+const timerDisplay = document.getElementById("timer");
+const sessionDisplay = document.getElementById("session");
+const alphaAudio = document.getElementById("alphaAudio");
+
+// =====================
+// Timer Functions
+// =====================
+function updateDisplay() {
+  const minutes = Math.floor(timeRemaining / 60).toString().padStart(2, "0");
+  const seconds = (timeRemaining % 60).toString().padStart(2, "0");
+  timerDisplay.textContent = `${minutes}:${seconds}`;
+
+  const labels = {
+    work: "Work Session",
+    short: "Short Break",
+    long: "Long Break"
+  };
+
+  sessionDisplay.textContent = labels[currentMode];
+}
+
+function switchMode() {
+  if (currentMode === "work") {
+    cycles++;
+    currentMode = cycles % LONG_BREAK_CYCLE === 0 ? "long" : "short";
+  } else {
+    currentMode = "work";
   }
 
-  function startTimer() {
-    if (isRunning) return;
-    isRunning = true;
-    timerInterval = setInterval(() => {
+  timeRemaining =
+    currentMode === "work"
+      ? WORK_TIME
+      : currentMode === "short"
+      ? SHORT_BREAK
+      : LONG_BREAK;
+
+  updateDisplay();
+}
+
+function startTimer() {
+  if (isRunning) return;
+  isRunning = true;
+
+  timerInterval = setInterval(() => {
+    if (timeRemaining > 0) {
       timeRemaining--;
       updateDisplay();
-      if (timeRemaining <= 0) {
-        clearInterval(timerInterval);
-        isRunning = false;
-        if (currentMode === "work") {
-          cyclesCompleted++;
-          if (cyclesCompleted % CYCLES_BEFORE_LONG_BREAK === 0) {
-            currentMode = "long_break";
-            timeRemaining = LONG_BREAK;
-          } else {
-            currentMode = "short_break";
-            timeRemaining = SHORT_BREAK;
-          }
-        } else {
-          currentMode = "work";
-          timeRemaining = WORK_TIME;
-        }
-        updateDisplay();
-        startTimer();
-      }
-    }, 1000);
-  }
-
-  function pauseTimer() {
-    clearInterval(timerInterval);
-    isRunning = false;
-  }
-
-  function resetTimer() {
-    clearInterval(timerInterval);
-    isRunning = false;
-    cyclesCompleted = 0;
-    currentMode = "work";
-    timeRemaining = WORK_TIME;
-    updateDisplay();
-  }
-
-  function saveSettings() {
-    const workMinutes = parseInt(document.getElementById("workInput").value, 10);
-    const shortBreakMinutes = parseInt(document.getElementById("shortBreakInput").value, 10);
-    const longBreakMinutes = parseInt(document.getElementById("longBreakInput").value, 10);
-
-    if (isNaN(workMinutes) || isNaN(shortBreakMinutes) || isNaN(longBreakMinutes)) {
-      alert("Please enter valid numbers.");
-      return;
-    }
-
-    WORK_TIME = workMinutes * 60;
-    SHORT_BREAK = shortBreakMinutes * 60;
-    LONG_BREAK = longBreakMinutes * 60;
-
-    resetTimer();
-  }
-
-  function toggleNoise() {
-    if (noise.paused) {
-      noise.play();
     } else {
-      noise.pause();
+      clearInterval(timerInterval);
+      isRunning = false;
+      switchMode();
+      startTimer();
     }
-  }
+  }, 1000);
+}
 
-  // Task List Functions
-  function loadTasks() {
-    const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-    const list = document.getElementById("taskList");
-    list.innerHTML = "";
-    tasks.forEach((task, index) => {
-      const li = document.createElement("li");
-      li.textContent = task;
-      li.onclick = () => removeTask(index);
-      list.appendChild(li);
-    });
-  }
+function pauseTimer() {
+  clearInterval(timerInterval);
+  isRunning = false;
+}
 
-  function addTask() {
-    const taskInput = document.getElementById("taskInput");
-    const task = taskInput.value.trim();
-    if (task) {
-      const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-      tasks.push(task);
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-      taskInput.value = "";
-      loadTasks();
-    }
-  }
-
-  function removeTask(index) {
-    const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-    tasks.splice(index, 1);
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-    loadTasks();
-  }
-
-  loadTasks();
+function resetTimer() {
+  clearInterval(timerInterval);
+  isRunning = false;
+  cycles = 0;
+  currentMode = "work";
+  timeRemaining = WORK_TIME;
   updateDisplay();
+}
+
+// =====================
+// Settings
+// =====================
+document.getElementById("saveBtn").addEventListener("click", () => {
+  const w = parseInt(workInput.value);
+  const s = parseInt(shortInput.value);
+  const l = parseInt(longInput.value);
+
+  if (!w || !s || !l) {
+    alert("Enter valid numbers.");
+    return;
+  }
+
+  WORK_TIME = w * 60;
+  SHORT_BREAK = s * 60;
+  LONG_BREAK = l * 60;
+  resetTimer();
+});
+
+// =====================
+// Audio
+// =====================
+document.getElementById("noiseBtn").addEventListener("click", () => {
+  if (alphaAudio.paused) {
+    alphaAudio.play();
+    noiseBtn.textContent = "Stop Alpha Waves";
+  } else {
+    alphaAudio.pause();
+    noiseBtn.textContent = "Play Alpha Waves";
+  }
+});
+
+// =====================
+// Buttons
+// =====================
+document.getElementById("startBtn").addEventListener("click", startTimer);
+document.getElementById("pauseBtn").addEventListener("click", pauseTimer);
+document.getElementById("resetBtn").addEventListener("click", resetTimer);
+
+// =====================
+// Task System
+// =====================
+function loadTasks() {
+  const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+  const list = document.getElementById("taskList");
+  list.innerHTML = "";
+
+  tasks.forEach((task, index) => {
+    const li = document.createElement("li");
+    li.textContent = task;
+    li.onclick = () => removeTask(index);
+    list.appendChild(li);
+  });
+}
+
+function addTask() {
+  const input = document.getElementById("taskInput");
+  const task = input.value.trim();
+  if (!task) return;
+
+  const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+  tasks.push(task);
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  input.value = "";
+  loadTasks();
+}
+
+function removeTask(index) {
+  const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+  tasks.splice(index, 1);
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  loadTasks();
+}
+
+document.getElementById("addTaskBtn").addEventListener("click", addTask);
+
+// Initialize
+updateDisplay();
+loadTasks();
 </script>
+
 </body>
 </html>
